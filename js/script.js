@@ -72,4 +72,100 @@ const appendPageLinks = (list) => {
  
 }
 
+const buildUpSearch = () => {
+
+   const pageHeader = document.querySelector('.page-header');
+
+   let searchDiv = document.createElement('div');
+
+   searchDiv.className = 'student-search';
+   
+   let searchInput = document.createElement('input');
+
+   searchInput.placeholder = 'Search for students...';
+
+   let searchButton = document.createElement('button');
+
+   searchButton.textContent = 'Search';
+
+   searchDiv.appendChild(searchInput);
+
+   searchDiv.appendChild(searchButton);
+
+   pageHeader.appendChild(searchDiv);
+
+   searchInput.addEventListener('keyup', () => {
+      let searchResults = [];
+      for (let i =0; i < lis.length; i++) {
+         let name = lis[i].children[0].children[1].textContent;
+         if (searchInput.value.length !== 0 && name.toLowerCase().includes(searchInput.value.toLowerCase())) {
+            lis[i].style.display = 'block';
+            searchResults.push(lis[i]);
+         } else {
+            lis[i].style.display = 'none';
+         }
+      }
+         removePagination();
+         removeNoMatch();
+      if (searchResults.length > 0) {
+        appendPageLinks(searchResults);
+      } else {
+         addNoMatchText();
+      }
+   });
+
+   searchButton.addEventListener('click', () => {
+      let searchResults = [];
+      for (let i =0; i < lis.length; i++) {
+         let name = lis[i].children[0].children[1].textContent;
+         if (searchInput.value.length !== 0 && name.toLowerCase().includes(searchInput.value.toLowerCase())) {
+            lis[i].style.display = 'block';
+            searchResults.push(lis[i]);
+         } else {
+            lis[i].style.display = 'none';
+         }
+      }
+         removePagination();
+         removeNoMatch(); 
+      if (searchResults.length > 0) {
+        appendPageLinks(searchResults);
+      } else {
+        addNoMatchText();
+      }
+   });
+
+}
+
+const removePagination = () => {
+
+   let pageDiv = document.querySelector('.page');
+   let paginationDiv = document.querySelector('.pagination');
+
+   if (paginationDiv) {
+   pageDiv.removeChild(paginationDiv);
+   }
+}
+
+const addNoMatchText = () => {
+
+  let pageDiv = document.querySelector('.page');
+
+  let noMatchP = document.createElement('p');
+  noMatchP.className = "nomatch";
+  noMatchP.textContent = "No matches found..."
+
+  pageDiv.appendChild(noMatchP);
+}
+
+const removeNoMatch = () => {
+
+   if (document.querySelector('.nomatch')) {
+      let noMatchP = document.querySelector('.nomatch');
+      let pageDiv = document.querySelector('.page');
+      pageDiv.removeChild(noMatchP);
+   }
+}
+
+
 appendPageLinks(lis);
+buildUpSearch();
