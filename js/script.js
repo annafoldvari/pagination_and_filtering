@@ -44,6 +44,7 @@ const appendPageLinks = (list) => {
       pagesLink.textContent = i + 1;
       pagesUl.appendChild(pagesLi);
       pagesLi.appendChild(pagesLink);
+
       if( i === 0) {
          pagesLink.className = 'active';
       }
@@ -57,11 +58,11 @@ const appendPageLinks = (list) => {
    
          showPage(list, page);
 
-   
          for (let i = 0; i < pagesLinks.length; i++) {
             let link = pagesLinks[i];
             link.className = '';
          }
+
          clickedLink.className = 'active';
       }) 
    }
@@ -71,6 +72,8 @@ const appendPageLinks = (list) => {
    showPage(list, 1);
  
 }
+
+//Builds up the search bar and adds the event listeners
 
 const buildUpSearch = () => {
 
@@ -95,27 +98,19 @@ const buildUpSearch = () => {
    pageHeader.appendChild(searchDiv);
 
    searchInput.addEventListener('keyup', () => {
-      let searchResults = [];
-      for (let i =0; i < lis.length; i++) {
-         let name = lis[i].children[0].children[1].textContent;
-         if (searchInput.value.length !== 0 && name.toLowerCase().includes(searchInput.value.toLowerCase())) {
-            lis[i].style.display = 'block';
-            searchResults.push(lis[i]);
-         } else {
-            lis[i].style.display = 'none';
-         }
-      }
-         removePagination();
-         removeNoMatch();
-      if (searchResults.length > 0) {
-        appendPageLinks(searchResults);
-      } else {
-         addNoMatchText();
-      }
+      doSearch(searchInput);
    });
 
    searchButton.addEventListener('click', () => {
-      let searchResults = [];
+      doSearch(searchInput);
+});
+
+}
+
+//Carries out the search
+
+const doSearch = (searchInput) => {
+   let searchResults = [];
       for (let i =0; i < lis.length; i++) {
          let name = lis[i].children[0].children[1].textContent;
          if (searchInput.value.length !== 0 && name.toLowerCase().includes(searchInput.value.toLowerCase())) {
@@ -125,16 +120,16 @@ const buildUpSearch = () => {
             lis[i].style.display = 'none';
          }
       }
-         removePagination();
-         removeNoMatch(); 
+      removePagination();
+      removeNoMatch(); 
       if (searchResults.length > 0) {
         appendPageLinks(searchResults);
       } else {
         addNoMatchText();
       }
-   });
-
 }
+
+// Removes the pagination links if they exist
 
 const removePagination = () => {
 
@@ -142,9 +137,11 @@ const removePagination = () => {
    let paginationDiv = document.querySelector('.pagination');
 
    if (paginationDiv) {
-   pageDiv.removeChild(paginationDiv);
+      pageDiv.removeChild(paginationDiv);
    }
 }
+
+// Adds the no match message
 
 const addNoMatchText = () => {
 
@@ -156,6 +153,8 @@ const addNoMatchText = () => {
 
   pageDiv.appendChild(noMatchP);
 }
+
+// Removes the no match message if it exists
 
 const removeNoMatch = () => {
 
