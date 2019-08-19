@@ -111,6 +111,8 @@ const buildUpSearch = () => {
 
 const doSearch = (searchInput) => {
    let searchResults = [];
+
+
       for (let i =0; i < lis.length; i++) {
          let name = lis[i].children[0].children[1].textContent;
          if (searchInput.value.length !== 0 && name.toLowerCase().includes(searchInput.value.toLowerCase())) {
@@ -120,11 +122,15 @@ const doSearch = (searchInput) => {
             lis[i].style.display = 'none';
          }
       }
+
       removePagination();
       removeNoMatch(); 
+
       if (searchResults.length > 0) {
         appendPageLinks(searchResults);
-      } else {
+      } else if (searchInput.value.length === 0) {
+         appendPageLinks(lis);
+      }else {
         addNoMatchText();
       }
 }
